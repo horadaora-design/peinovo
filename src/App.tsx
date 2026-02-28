@@ -23,23 +23,12 @@ import { motion, AnimatePresence } from 'motion/react';
 
 const CHECKOUT_URL = "https://www.ggcheckout.com/checkout/v5/xi498KPqTw2NpUI0Apzh";
 
-const WHATSAPP_PROOFS = [
-  "https://digitallfp.wordpress.com/wp-content/uploads/2026/01/whatsapp-image-2026-01-16-at-22.30.23.jpeg",
-  "https://digitallfp.wordpress.com/wp-content/uploads/2026/01/1.jpeg",
-  "https://digitallfp.wordpress.com/wp-content/uploads/2026/01/whatsapp-image-2026-01-04-at-19.28.56.jpeg",
-  "https://digitallfp.wordpress.com/wp-content/uploads/2026/01/whatsapp-image-2026-01-04-at-11.36.58-1.jpeg",
-  "https://digitallfp.wordpress.com/wp-content/uploads/2026/01/whatsapp-image-2026-01-04-at-11.36.58.jpeg",
-  "https://digitallfp.wordpress.com/wp-content/uploads/2026/01/whatsapp-image-2026-01-04-at-11.36.58-2.jpeg"
-];
-
 const MATERIAL_SAMPLES = [
-  "https://digitallfp.wordpress.com/wp-content/uploads/2026/01/amostra.png",
-  "https://digitallfp.wordpress.com/wp-content/uploads/2026/01/1.jpg",
-  "https://digitallfp.wordpress.com/wp-content/uploads/2026/01/2.jpg",
-  "https://digitallfp.wordpress.com/wp-content/uploads/2026/01/3.jpg",
-  "https://digitallfp.wordpress.com/wp-content/uploads/2026/01/4.jpg",
-  "https://digitallfp.wordpress.com/wp-content/uploads/2026/01/5.jpg",
-  "https://digitallfp.wordpress.com/wp-content/uploads/2026/01/6.jpg"
+  "https://digitallfp.wordpress.com/wp-content/uploads/2026/02/11.png",
+  "https://digitallfp.wordpress.com/wp-content/uploads/2026/02/12.png",
+  "https://digitallfp.wordpress.com/wp-content/uploads/2026/02/13.png",
+  "https://digitallfp.wordpress.com/wp-content/uploads/2026/02/14.png",
+  "https://digitallfp.wordpress.com/wp-content/uploads/2026/02/15.png"
 ];
 
 const Badge = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => (
@@ -65,17 +54,22 @@ const Button = ({ children, onClick, href, className = "" }: { children: React.R
   return href ? <a href={href} className="block w-full">{content}</a> : content;
 };
 
-const BonusCard = ({ children, color = "yellow", rotation = "rotate-1", value = "" }: { children: React.ReactNode, color?: 'yellow' | 'pink' | 'blue', rotation?: string, value?: string }) => {
-  const colors = {
-    yellow: "bg-yellow-100 border-yellow-200 text-yellow-900",
-    pink: "bg-pink-100 border-pink-200 text-pink-900",
-    blue: "bg-blue-100 border-blue-200 text-blue-900"
-  };
+const BonusCard = ({ children, title, subtitle, value }: { children?: React.ReactNode, title: string, subtitle: string, value: string }) => {
   return (
-    <div className={`p-6 md:p-8 border-b-4 shadow-md ${rotation} ${colors[color]} relative rounded-sm h-full flex flex-col`}>
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-4 bg-white/50 blur-sm rounded-full" />
-      {value && <span className="absolute -top-3 -right-2 bg-red-600 text-white text-[10px] md:text-xs font-black px-2 py-1 rounded-lg rotate-6 shadow-md z-10">VALIA R$ {value}</span>}
-      {children}
+    <div className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm relative overflow-hidden group hover:shadow-md transition-shadow">
+      <div className="absolute top-0 right-0 bg-brand-yellow text-brand-blue font-bold px-4 py-1 rounded-bl-xl text-xs">
+        VALIA R$ {value}
+      </div>
+      <div className="mb-4">
+        <div className="w-12 h-12 bg-brand-cream rounded-xl flex items-center justify-center mb-4">
+          <PackageCheck className="text-brand-blue" size={24} />
+        </div>
+        <h4 className="font-serif text-xl text-brand-blue mb-1">{title}</h4>
+        <p className="text-slate-500 text-sm italic mb-4">{subtitle}</p>
+      </div>
+      <div className="text-slate-600 text-sm leading-relaxed">
+        {children}
+      </div>
     </div>
   );
 };
@@ -119,32 +113,6 @@ const SampleCarousel = () => {
   );
 };
 
-const ProofCarousel = () => {
-  const [current, setCurrent] = useState(0);
-  const next = () => setCurrent((prev) => (prev + 1) % WHATSAPP_PROOFS.length);
-  const prev = () => setCurrent((prev) => (prev - 1 + WHATSAPP_PROOFS.length) % WHATSAPP_PROOFS.length);
-  return (
-    <div className="relative max-w-lg mx-auto px-4">
-      <div className="relative">
-        <div className="bg-white rounded-[2.5rem] shadow-2xl border-4 md:border-[12px] border-white overflow-hidden relative aspect-[9/18.5] flex items-center justify-center bg-slate-100">
-          <img src={WHATSAPP_PROOFS[current]} alt={`WhatsApp Proof ${current + 1}`} className="w-full h-full object-cover select-none transition-opacity duration-300" />
-        </div>
-        <button onClick={prev} className="absolute -left-4 md:-left-12 top-1/2 -translate-y-1/2 bg-white p-3 md:p-4 rounded-full shadow-2xl hover:bg-blue-500 hover:text-white transition-all z-20 text-slate-800">
-          <ChevronLeft size={28} />
-        </button>
-        <button onClick={next} className="absolute -right-4 md:-right-12 top-1/2 -translate-y-1/2 bg-white p-3 md:p-4 rounded-full shadow-2xl hover:bg-blue-500 hover:text-white transition-all z-20 text-slate-800">
-          <ChevronRight size={28} />
-        </button>
-      </div>
-      <div className="mt-8 flex justify-center gap-2">
-        {WHATSAPP_PROOFS.map((_, i) => (
-          <button key={i} onClick={() => setCurrent(i)} className={`h-2 rounded-full transition-all ${current === i ? "bg-blue-600 w-8" : "bg-slate-300 w-2"}`} />
-        ))}
-      </div>
-    </div>
-  );
-};
-
 export default function App() {
   const [timeLeft, setTimeLeft] = useState(3599);
 
@@ -167,54 +135,41 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-grid text-[#1e293b]">
-      {/* Sticky Timer */}
-      <div className="bg-red-600 text-white py-2.5 px-4 text-center font-bold text-[10px] md:text-sm sticky top-0 z-[60] flex justify-center items-center gap-2 shadow-lg">
-        <Zap size={14} className="animate-pulse" />
-        PROMOÇÃO TERMINA EM:
-        <span className="font-black text-yellow-300 ml-1">{formatTime(timeLeft)}</span>
+    <div className="min-h-screen bg-brand-cream text-[#1e293b] font-sans">
+      {/* Top Banner */}
+      <div className="bg-brand-blue text-white py-3 px-4 text-center font-bold text-[10px] md:text-sm sticky top-0 z-[60] flex justify-center items-center gap-2 shadow-lg">
+        <Sparkles size={14} className="text-brand-yellow animate-pulse" />
+        🚀 LANÇAMENTO 2026 — Único material do mercado atualizado com o Decreto nº 12.773/2025 e alinhado à BNCC
       </div>
 
-      {/* Header */}
-      <header className="pt-4 md:pt-6 pb-8 md:pb-16 px-4 text-center bg-white border-b-8 border-yellow-400 relative overflow-hidden">
-        <div className="absolute top-10 left-10 opacity-10 pointer-events-none hidden md:block">
-          <Star size={48} className="text-yellow-400 rotate-12" />
-        </div>
-        <div className="absolute bottom-10 right-10 opacity-10 pointer-events-none hidden md:block">
-          <Pencil size={48} className="text-blue-400 -rotate-12" />
-        </div>
-        <div className="max-w-5xl mx-auto relative z-10">
-          <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-[5.5rem] font-black text-[#1e293b] leading-[1.1] md:leading-[1] tracking-tighter mb-4 text-balance uppercase px-2">
-            RECEBA <span className="text-blue-600">+70 PEIS PRONTOS</span> E EDITÁVEIS NO WORD
+      {/* Hero Section */}
+      <header className="bg-brand-blue pt-12 md:pt-20 pb-16 md:pb-24 px-4 text-center relative overflow-hidden">
+        <div className="max-w-6xl mx-auto relative z-10">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-[5.5rem] font-black text-white leading-[1.1] md:leading-[1] tracking-tighter mb-4 text-balance uppercase px-2">
+            150 PEIs prontos
             <br className="hidden sm:block" />
-            E FAÇA PEIS EM <span className="relative inline-block">
-              <span className="relative z-10 text-red-600">15 MINUTOS.</span>
-              <span className="absolute left-0 bottom-1 md:bottom-2 w-full h-2 md:h-8 bg-yellow-400/80 -z-10 rounded-lg" />
+            para usar <span className="relative inline-block">
+              <span className="relative z-10 text-red-500">HOJE MESMO.</span>
+              <span className="absolute left-0 bottom-1 md:bottom-2 w-full h-1 md:h-8 bg-brand-yellow/80 -z-10 rounded-lg" />
             </span>
           </h1>
-          <p className="text-slate-500 font-bold text-xs md:text-sm uppercase tracking-widest mb-6">Veja o que você vai receber (ative o som)</p>
           
-          <div className="flex justify-center mb-6 md:mb-10">
-            <div className="w-full max-w-4xl rounded-[2rem] overflow-hidden shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] border-4 md:border-8 border-slate-100 bg-black aspect-video flex items-center justify-center relative">
-              <iframe 
-                className="w-full h-full" 
-                src="https://www.youtube.com/embed/o7XQBKbekok?autoplay=1&mute=1&controls=1&modestbranding=1&rel=0&iv_load_policy=3&fs=0" 
-                title="MATERIAL PEIS" 
-                frameBorder="0" 
-                allow="autoplay; encrypted-media; picture-in-picture" 
-                referrerPolicy="strict-origin-when-cross-origin" 
-                allowFullScreen 
+          <p className="text-white text-lg md:text-2xl font-bold max-w-4xl mx-auto mb-12 leading-relaxed text-balance">
+            Planos Educacionais Individualizados completos, atualizados com o Decreto nº 12.773/2025 e totalmente alinhados à BNCC — para TEA, TDAH, Deficiência Intelectual e Deficiência Física/Motora.
+          </p>
+
+          <div className="flex justify-center mb-12">
+            <div className="w-full max-w-6xl relative px-4">
+              <img 
+                src="https://digitallfp.wordpress.com/wp-content/uploads/2026/02/mockup-1.png" 
+                alt="Mockup 150 PEIs" 
+                className="w-full h-auto object-contain drop-shadow-[0_35px_35px_rgba(0,0,0,0.5)]"
+                referrerPolicy="no-referrer"
               />
             </div>
           </div>
 
-          <div className="bg-[#facc15] border-2 border-[#1e293b] rounded-2xl px-6 md:px-12 py-4 md:py-8 inline-block shadow-[8px_8px_0px_0px_rgba(30,41,59,1)] mb-8 -rotate-1 hover:rotate-0 transition-transform duration-300 max-w-4xl">
-            <h2 className="text-base sm:text-xl md:text-3xl font-black text-[#1e293b] leading-tight text-balance">
-              +70 MODELOS de PEIs prontos, completos e editáveis para Educação Infantil, Fundamental e Ensino Médio. Você edita, adapta e entrega.
-            </h2>
-          </div>
-
-          <div className="flex flex-wrap justify-center gap-2 md:gap-3 mb-8">
+          <div className="flex flex-wrap justify-center gap-2 md:gap-3 mb-12">
             {[
               { label: "Autismo (TEA)", color: "bg-[#7c3aed]", icon: <Brain size={14} /> },
               { label: "TDAH", color: "bg-[#f59e0b]", icon: <Zap size={14} /> },
@@ -233,24 +188,48 @@ export default function App() {
             ))}
           </div>
 
-          <div className="relative inline-block w-full max-w-md">
-            <Button onClick={scrollToOffer} className="bg-green-500 text-white border-b-8 border-green-700 hover:bg-green-400">
-              QUERO MEUS PEIS PRONTOS AGORA
+          <div className="flex flex-col items-center gap-6">
+            <Button onClick={scrollToOffer} className="bg-brand-yellow text-brand-blue hover:bg-yellow-400 max-w-md border-none text-xl md:text-2xl py-6 rounded-full">
+              QUERO MEUS PEIS PRONTOS AGORA <ArrowRight className="ml-2" />
             </Button>
-            <div className="mt-4 flex flex-col items-center gap-1">
-              <p className="text-slate-900 font-black text-xl md:text-3xl">Apenas R$ 19,90</p>
-              <div className="flex items-center gap-2 text-[10px] md:text-xs font-bold text-slate-500 uppercase tracking-widest">
-                <ShieldCheck size={14} className="text-green-600" /> Compra Segura | Acesso Imediato
-              </div>
+            
+            <div className="flex items-center gap-4 text-white/60 text-xs md:text-sm font-bold uppercase tracking-widest">
+              <div className="flex items-center gap-1"><ShieldCheck size={16} className="text-brand-yellow" /> Compra Segura</div>
+              <div className="w-1 h-1 bg-white/20 rounded-full" />
+              <div className="flex items-center gap-1"><Zap size={16} className="text-brand-yellow" /> Acesso Imediato</div>
             </div>
           </div>
         </div>
       </header>
 
+      {/* Stats Bar */}
+      <div className="bg-brand-blue-light py-8 md:py-12 border-y border-white/10">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4 text-center">
+            <div>
+              <div className="font-serif text-4xl md:text-6xl text-brand-yellow mb-1">150</div>
+              <div className="text-white/60 text-[10px] md:text-xs font-bold uppercase tracking-widest">Modelos de PEIs</div>
+            </div>
+            <div>
+              <div className="font-serif text-4xl md:text-6xl text-brand-yellow mb-1">14</div>
+              <div className="text-white/60 text-[10px] md:text-xs font-bold uppercase tracking-widest">Tipos de Deficiências</div>
+            </div>
+            <div>
+              <div className="font-serif text-4xl md:text-6xl text-brand-yellow mb-1">10</div>
+              <div className="text-white/60 text-[10px] md:text-xs font-bold uppercase tracking-widest">Competências BNCC</div>
+            </div>
+            <div>
+              <div className="font-serif text-4xl md:text-6xl text-brand-yellow mb-1">04</div>
+              <div className="text-white/60 text-[10px] md:text-xs font-bold uppercase tracking-widest">Bônus Exclusivos</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Value Props */}
-      <Section className="bg-blue-50 border-b border-blue-100" tight>
+      <Section className="bg-brand-cream border-b border-slate-200" tight>
         <div className="text-center mb-8 md:mb-12">
-          <h2 className="text-2xl md:text-5xl font-black text-slate-900 uppercase tracking-tight leading-none text-balance">
+          <h2 className="text-2xl md:text-5xl font-black text-brand-blue uppercase tracking-tight leading-none text-balance">
             Se você monta PEI do zero, está pagando com o seu tempo.
           </h2>
         </div>
@@ -267,23 +246,23 @@ export default function App() {
           ))}
         </div>
         <div className="mt-12 md:mt-16 text-center max-w-3xl mx-auto space-y-6">
-          <p className="text-xl md:text-3xl font-black text-slate-900 leading-tight">
-            Por isso, eu reuni mais de 70 páginas de PEIs, PDIs e PAEE prontos para usar.
+          <p className="text-xl md:text-3xl font-black text-brand-blue leading-tight">
+            Por isso, eu reuni mais de 150 modelos de PEIs, PDIs e PAEE prontos para usar.
           </p>
           <p className="text-lg md:text-2xl font-bold text-slate-600 leading-relaxed">
             São modelos pensados para você modelar, editar e entregar em poucos minutos, sem insegurança e sem retrabalho.
           </p>
-          <div className="w-24 h-2 bg-blue-500 mx-auto rounded-full opacity-30" />
+          <div className="w-24 h-2 bg-brand-yellow mx-auto rounded-full opacity-30" />
         </div>
       </Section>
 
       {/* What you get */}
       <Section className="bg-white">
         <div className="text-center mb-16">
-          <Badge className="bg-blue-600 text-white mb-6 !text-xs md:!text-lg py-2.5 px-6 shadow-md">
+          <Badge className="bg-brand-blue text-white mb-6 !text-xs md:!text-lg py-2.5 px-6 shadow-md">
             O que você recebe ao adquirir o kit
           </Badge>
-          <h2 className="text-3xl md:text-6xl font-black text-slate-900 uppercase tracking-tighter leading-[1] mb-6">
+          <h2 className="text-3xl md:text-6xl font-black text-brand-blue uppercase tracking-tighter leading-[1] mb-6">
             Tudo o que você precisa para montar PEIs sem sofrimento em 2026
           </h2>
           <p className="text-xl md:text-2xl font-bold text-slate-500 max-w-2xl mx-auto">
@@ -295,7 +274,7 @@ export default function App() {
           {[
             { 
               num: "1️⃣", 
-              title: "+70 PÁGINAS DE PEIs PRONTOS (EDITÁVEIS)", 
+              title: "150 MODELOS DE PEIs PRONTOS (EDITÁVEIS)", 
               list: ["Modelos completos", "Estrutura já validada", "Linguagem técnica aceita por coordenação", "Prontos para adaptar em poucos minutos"],
               footer: "Você só ajusta para a realidade do aluno e entrega."
             },
@@ -318,8 +297,8 @@ export default function App() {
               footer: "Você não precisa mais procurar modelo na internet."
             }
           ].map((item, i) => (
-            <div key={i} className="bg-slate-50 border-2 border-slate-100 p-8 rounded-[2rem] hover:border-blue-500 transition-colors group">
-              <h3 className="text-xl md:text-2xl font-black text-slate-900 uppercase leading-tight">{item.num} {item.title}</h3>
+            <div key={i} className="bg-brand-cream border-2 border-slate-100 p-8 rounded-[2rem] hover:border-brand-blue transition-colors group">
+              <h3 className="text-xl md:text-2xl font-black text-brand-blue uppercase leading-tight">{item.num} {item.title}</h3>
               <ul className="mt-4 space-y-3 mb-6">
                 {item.list.map((li, j) => (
                   <li key={j} className="flex items-start gap-2 font-bold text-slate-600">
@@ -328,8 +307,8 @@ export default function App() {
                 ))}
               </ul>
               <div className="flex items-start gap-2 p-4 bg-white rounded-2xl border border-slate-200 shadow-sm">
-                <Pin className="text-blue-600 shrink-0 rotate-12" size={20} />
-                <p className="text-sm font-black text-slate-800">{item.footer}</p>
+                <Pin className="text-brand-blue shrink-0 rotate-12" size={20} />
+                <p className="text-sm font-black text-brand-blue">{item.footer}</p>
               </div>
             </div>
           ))}
@@ -353,41 +332,32 @@ export default function App() {
         <SampleCarousel />
       </Section>
 
-      {/* Bonus */}
-      <Section className="bg-white relative overflow-hidden">
+      {/* Bonus Section */}
+      <Section className="bg-white">
         <div className="text-center mb-16">
-          <h3 className="text-[1.75rem] sm:text-[2.5rem] md:text-[3.5rem] font-extrabold text-[#1e293b] mb-4 uppercase leading-[1.1] tracking-tighter text-balance">
-            ALÉM DOS PEIS PRONTOS, VOCÊ RECEBE FERRAMENTAS PARA NÃO ERRAR
-          </h3>
-          <p className="text-lg md:text-[1.75rem] font-medium text-slate-500 mb-16 px-4 leading-relaxed">
-            Tudo pensado para você montar, revisar e entregar com segurança.
+          <Badge className="bg-brand-blue text-white mb-6 !text-xs md:!text-lg py-2.5 px-6 shadow-md">
+            BÔNUS EXCLUSIVOS
+          </Badge>
+          <h2 className="text-3xl md:text-6xl font-black text-brand-blue uppercase tracking-tighter leading-[1] mb-6">
+            Você leva muito mais <br className="hidden md:block" /> do que 150 PEIs
+          </h2>
+          <p className="text-xl md:text-2xl font-bold text-slate-500 max-w-3xl mx-auto">
+            Junto com os 150 PEIs, você recebe 4 materiais extras — prontos para usar, sem custo adicional.
           </p>
-          <div className="space-y-4">
-            <h2 className="text-[2.5rem] sm:text-[4rem] md:text-[6.5rem] font-black text-[#1e293b] uppercase leading-none tracking-tighter">PRESENTES EXCLUSIVOS</h2>
-            <p className="text-base md:text-[1.5rem] font-extrabold text-[#1e293b] px-4 uppercase tracking-[0.15em]">VÁLIDOS APENAS PARA AS COMPRAS DE HOJE!</p>
-          </div>
-        </div>
-
-        <div className="mb-20 flex justify-center">
-          <img src="https://digitallfp.wordpress.com/wp-content/uploads/2026/01/bonus5.png" alt="Mockup Bônus" className="w-full max-w-4xl h-auto transform hover:scale-105 transition-transform duration-700" />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-          <BonusCard color="blue" rotation="rotate-1" value="97,00">
-            <h4 className="text-lg md:text-xl font-black mb-1">🥇 BÔNUS 1</h4>
-            <p className="font-black text-sm md:text-lg mb-2 text-slate-900">Banco de Objetivos para cada deficiência Prontos</p>
+          <BonusCard title="🥇 BÔNUS 1" subtitle="Banco de Objetivos para cada deficiência Prontos" value="97,00">
             <p className="text-xs md:text-sm italic font-bold text-slate-600 mb-4">“Nunca mais trave na hora de escrever objetivos”</p>
             <div className="space-y-1.5 text-[10px] md:text-xs font-bold text-slate-700">
-              <p className="uppercase text-blue-600 font-black">Inclui objetivos prontos por:</p>
-              <div className="flex flex-wrap gap-x-2 text-blue-700 font-black">
+              <p className="uppercase text-brand-blue font-black">Inclui objetivos prontos por:</p>
+              <div className="flex flex-wrap gap-x-2 text-brand-blue font-black">
                 <span>TEA</span> <span>•</span> <span>TDAH</span> <span>•</span> <span>DI</span> <span>•</span> <span>Dislexia</span>
               </div>
             </div>
           </BonusCard>
 
-          <BonusCard color="pink" rotation="-rotate-1" value="67,00">
-            <h4 className="text-lg md:text-xl font-black mb-1">🥈 BÔNUS 2</h4>
-            <p className="font-black text-sm md:text-lg mb-2 text-slate-900">Frases Prontas (Copia e Cola)</p>
+          <BonusCard title="🥈 BÔNUS 2" subtitle="Frases Prontas (Copia e Cola)" value="67,00">
             <p className="text-xs md:text-sm italic font-bold text-slate-600 mb-4">“Copiar, colar e entregar”</p>
             <ul className="list-disc pl-4 space-y-1 text-[10px] md:text-xs font-bold text-slate-700">
               <li>Justificativa pedagógica</li>
@@ -396,9 +366,7 @@ export default function App() {
             </ul>
           </BonusCard>
 
-          <BonusCard color="yellow" rotation="rotate-1" value="47,00">
-            <h4 className="text-lg md:text-xl font-black mb-1">🥉 BÔNUS 3</h4>
-            <p className="font-black text-sm md:text-lg mb-2 text-slate-900">Checklist de PEI Aprovado</p>
+          <BonusCard title="🥉 BÔNUS 3" subtitle="Checklist de PEI Aprovado" value="47,00">
             <p className="text-xs md:text-sm italic font-bold text-slate-600 mb-4">“Antes de entregar, confira isso”</p>
             <ul className="list-disc pl-4 space-y-1 text-[10px] md:text-xs font-bold text-slate-700">
               <li>O que não pode faltar</li>
@@ -407,51 +375,111 @@ export default function App() {
             </ul>
           </BonusCard>
 
-          <BonusCard color="blue" rotation="-rotate-1" value="57,00">
-            <h4 className="text-lg md:text-xl font-black mb-1">🏅 BÔNUS 4</h4>
-            <p className="font-black text-sm md:text-lg mb-1 text-slate-900">+100 Atividades para Autismo</p>
+          <BonusCard title="🏅 BÔNUS 4" subtitle="+100 Atividades para Autismo" value="57,00">
             <p className="text-xs md:text-sm italic font-bold text-slate-600 mb-4">“Aplicar sem precisar adaptar do zero”</p>
             <p className="text-[10px] md:text-xs font-bold text-slate-700">Material pronto para aplicar no AEE e sala regular.</p>
           </BonusCard>
 
-          <BonusCard color="pink" rotation="rotate-1" value="77,00">
-            <h4 className="text-lg md:text-xl font-black mb-1">🏅 BÔNUS 5</h4>
-            <p className="font-black text-sm md:text-lg mb-1 text-slate-900">+240 relatórios descritivos prontos</p>
+          <BonusCard title="🏅 BÔNUS 5" subtitle="+240 relatórios descritivos prontos" value="77,00">
             <p className="text-xs md:text-sm italic font-bold text-slate-600 mb-4">“Economize dias de trabalho na escrita dos relatórios”</p>
             <p className="text-[10px] md:text-xs font-bold text-slate-700">Modelos prontos para preenchimento e entrega rápida.</p>
+          </BonusCard>
+
+          <BonusCard title="🎁 BÔNUS 6" subtitle="Checklist de Acessibilidade Escolar" value="47,00">
+            <p className="text-xs md:text-sm italic font-bold text-slate-600 mb-4">“Garanta que sua escola seja inclusiva”</p>
+            <p className="text-[10px] md:text-xs font-bold text-slate-700">Um guia prático para avaliar a acessibilidade física e pedagógica.</p>
+          </BonusCard>
+
+          <BonusCard title="🎁 BÔNUS 7" subtitle="Guia de Reunião com a Família" value="57,00">
+            <p className="text-xs md:text-sm italic font-bold text-slate-600 mb-4">“Tenha reuniões mais produtivas e acolhedoras”</p>
+            <p className="text-[10px] md:text-xs font-bold text-slate-700">Roteiro completo para conversar com os pais sobre o PEI.</p>
+          </BonusCard>
+
+          <BonusCard title="🎁 BÔNUS 8" subtitle="Modelos de Relatório de AEE" value="67,00">
+            <p className="text-xs md:text-sm italic font-bold text-slate-600 mb-4">“Relatórios técnicos sem complicação”</p>
+            <p className="text-[10px] md:text-xs font-bold text-slate-700">Modelos prontos para o Atendimento Educacional Especializado.</p>
+          </BonusCard>
+
+          <BonusCard title="🎁 BÔNUS 9" subtitle="Glossário da Legislação Educacional" value="37,00">
+            <p className="text-xs md:text-sm italic font-bold text-slate-600 mb-4">“Entenda os termos técnicos da lei”</p>
+            <p className="text-[10px] md:text-xs font-bold text-slate-700">Os principais termos e leis explicados de forma simples.</p>
           </BonusCard>
         </div>
       </Section>
 
-      {/* Social Proof */}
-      <Section className="bg-blue-50 border-t border-blue-100">
-        <div className="text-center mb-10">
-          <h2 className="text-2xl md:text-5xl font-black text-slate-800 uppercase px-4 leading-tight">ENTREGA DO MATERIAL VIA WHATSAPP:</h2>
-          <p className="text-sm md:text-xl text-slate-500 mt-4 font-bold px-4 italic">Resultados reais de quem já adquiriu e aprovou!</p>
+      {/* Testimonials Section */}
+      <Section className="bg-brand-cream border-y border-slate-200">
+        <div className="text-center mb-16">
+          <Badge className="bg-brand-blue text-white mb-4">O que dizem os educadores</Badge>
+          <h2 className="text-3xl md:text-6xl font-black text-brand-blue uppercase tracking-tighter leading-tight">
+            Aprovado por quem <br className="hidden md:block" /> está na sala de aula
+          </h2>
         </div>
-        <ProofCarousel />
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {[
+            {
+              initial: "M",
+              name: "Mariana Costa",
+              role: "Professora de AEE — Ensino Fundamental",
+              text: "Economizei semanas de trabalho. Os PEIs já vêm com os objetivos alinhados à BNCC e referenciados ao Decreto 12.773. Só precisei ajustar os dados do aluno e personalizar algumas estratégias."
+            },
+            {
+              initial: "F",
+              name: "Fernanda Rocha",
+              role: "Coordenadora Pedagógica — Rede Municipal",
+              text: "Como coordenadora, precisava de um material que já viesse na conformidade legal mais recente. Este material está atualizado com o Decreto 12.773/2025 — algo que a maioria dos outros materiais do mercado ainda não tem."
+            },
+            {
+              initial: "R",
+              name: "Ricardo Alves",
+              role: "Especialista em Educação Especial — UFRJ",
+              text: "O fato de ter PEIs específicos para cada condição E cada nível de ensino faz toda a diferença. O PEI para TEA no Ensino Médio é completamente diferente do da Educação Infantil — como deveria ser."
+            }
+          ].map((testimonial, i) => (
+            <div key={i} className="bg-white p-8 rounded-[2rem] border border-slate-100 shadow-sm flex flex-col h-full">
+              <div className="mb-6 text-brand-yellow">
+                <div className="flex gap-1">
+                  {[...Array(5)].map((_, i) => <Star key={i} size={16} fill="currentColor" />)}
+                </div>
+              </div>
+              <p className="text-slate-600 font-bold italic mb-8 flex-grow leading-relaxed">
+                "{testimonial.text}"
+              </p>
+              <div className="flex items-center gap-4 pt-6 border-t border-slate-50">
+                <div className="w-12 h-12 bg-brand-blue rounded-full flex items-center justify-center text-white font-black text-xl">
+                  {testimonial.initial}
+                </div>
+                <div>
+                  <h4 className="font-black text-brand-blue leading-none mb-1">{testimonial.name}</h4>
+                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{testimonial.role}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </Section>
 
-      {/* Final Offer */}
-      <Section id="oferta" className="bg-black pt-16 md:pt-24 pb-32 md:pb-48">
+      {/* Pricing Section */}
+      <Section id="oferta" className="bg-brand-blue pt-16 md:pt-24 pb-32 md:pb-48">
         <div className="max-w-3xl mx-auto">
           <div className="relative">
             <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-8 w-24 md:w-40 h-10 md:h-16 bg-slate-200 border-x-4 border-t-4 border-slate-300 rounded-t-3xl z-20 flex items-center justify-center">
               <div className="w-12 md:w-20 h-2 md:h-3 bg-slate-400 rounded-full" />
             </div>
             <div className="bg-white rounded-[2rem] md:rounded-[3rem] shadow-[0_20px_50px_rgba(255,255,255,0.05)] border-4 border-slate-800 overflow-hidden relative z-10">
-              <div className="bg-blue-600 py-8 md:py-12 px-6 text-center text-white">
+              <div className="bg-brand-blue py-8 md:py-12 px-6 text-center text-white">
                 <Badge className="bg-white/20 text-white mb-4 border border-white/30">Oportunidade Única</Badge>
                 <h3 className="text-3xl md:text-6xl font-black italic uppercase tracking-tighter leading-tight">OFERTA DE LANÇAMENTO</h3>
               </div>
               <div className="p-6 md:p-12">
                 <div className="mb-10 md:mb-12 space-y-4">
-                  <h4 className="text-slate-900 font-black text-lg md:text-2xl uppercase tracking-tight flex items-center gap-2 mb-6">
-                    <Sparkles className="text-yellow-400" fill="currentColor" /> O que você vai receber:
+                  <h4 className="text-brand-blue font-black text-lg md:text-2xl uppercase tracking-tight flex items-center gap-2 mb-6">
+                    <Sparkles className="text-brand-yellow" fill="currentColor" /> O que você vai receber:
                   </h4>
                   <div className="grid grid-cols-1 gap-3">
                     {[
-                      { text: "+70 PEIs, PDIs, PAEE e Estudo de Caso Editáveis", bold: true },
+                      { text: "150 PEIs, PDIs, PAEE e Estudo de Caso Editáveis", bold: true },
                       { text: "Totalmente editáveis no Word e Canva", bold: false },
                       { text: "Alinhados à BNCC com foco em educação regular e especial", bold: false },
                       { text: "BÔNUS 1: Banco de Objetivos Prontos", bold: true },
@@ -459,9 +487,13 @@ export default function App() {
                       { text: "BÔNUS 3: Checklist de PEI Aprovado", bold: true },
                       { text: "BÔNUS 4: +100 Atividades para autismo", bold: true },
                       { text: "BÔNUS 5: +240 Relatórios Descritivos Prontos", bold: true },
+                      { text: "BÔNUS 6: Checklist de Acessibilidade Escolar", bold: true },
+                      { text: "BÔNUS 7: Guia de Reunião com a Família", bold: true },
+                      { text: "BÔNUS 8: Modelos de Relatório de AEE", bold: true },
+                      { text: "BÔNUS 9: Glossário da Legislação Educacional", bold: true },
                       { text: "Acesso Vitalício e atualizações mensais", bold: true }
                     ].map((item, i) => (
-                      <div key={i} className="flex items-start gap-3 p-3 bg-slate-50 rounded-xl border border-slate-100 group hover:border-blue-200 transition-colors">
+                      <div key={i} className="flex items-start gap-3 p-3 bg-slate-50 rounded-xl border border-slate-100 group hover:border-brand-blue transition-colors">
                         <CircleCheckBig className="text-green-500 shrink-0 mt-0.5" size={20} />
                         <span className={`text-sm md:text-base text-slate-700 leading-tight ${item.bold ? "font-black" : "font-bold"}`}>{item.text}</span>
                       </div>
@@ -469,30 +501,28 @@ export default function App() {
                   </div>
                 </div>
 
-                <div className="text-center bg-yellow-50 rounded-3xl p-6 md:p-10 border-2 border-yellow-200 mb-6">
+                <div className="text-center bg-brand-cream rounded-3xl p-4 md:p-10 border-2 border-slate-200 mb-6">
                   <p className="text-lg md:text-3xl text-slate-400 line-through font-bold mb-1">De R$ 79,90</p>
                   <div className="flex flex-col md:flex-row justify-center items-center md:items-baseline gap-1 md:gap-4 mb-4">
-                    <span className="text-xl md:text-4xl font-black text-slate-900 uppercase italic">Por</span>
-                    <span className="text-6xl md:text-9xl font-black text-green-600 tracking-tighter leading-none">R$ 19,90</span>
+                    <span className="text-xl md:text-4xl font-black text-brand-blue uppercase italic">Por</span>
+                    <span className="text-5xl sm:text-6xl md:text-9xl font-black text-green-600 tracking-tighter leading-none">R$ 29,90</span>
                   </div>
-                  <div className="bg-white/80 backdrop-blur-sm text-green-700 font-black py-2 md:py-3 px-6 md:px-10 rounded-full inline-block text-[10px] md:text-lg border-2 border-green-100 uppercase tracking-widest">
+                  <div className="bg-white/80 backdrop-blur-sm text-green-700 font-black py-2 md:py-3 px-4 md:px-10 rounded-full inline-block text-[10px] md:text-lg border-2 border-green-100 uppercase tracking-widest">
                     PAGAMENTO ÚNICO NO PIX E NO CARTÃO
                   </div>
                 </div>
-                <p className="text-center text-red-600 font-black mb-10 text-sm md:text-xl italic animate-pulse">
-                  "Ou você compra hoje esse kit ou vai continuar sofrendo para fazer pei do zero"
-                </p>
 
-                <Button href={CHECKOUT_URL} className="bg-green-500 text-white border-b-8 border-green-700 hover:bg-green-400 text-xl md:text-4xl py-6 md:py-10 shadow-2xl">
-                  QUERO MEU KIT AGORA <ArrowRight className="inline-block ml-2 w-6 h-6 md:w-10 md:h-10" />
+
+                <Button href={CHECKOUT_URL} className="bg-green-500 text-white border-b-8 border-green-700 hover:bg-green-400 text-lg sm:text-xl md:text-4xl py-6 md:py-10 shadow-2xl">
+                  QUERO MEU KIT AGORA <ArrowRight className="inline-block ml-2 w-5 h-5 md:w-10 md:h-10" />
                 </Button>
 
                 <div className="mt-10 pt-10 border-t border-slate-100 grid grid-cols-3 gap-2 md:gap-6 text-[8px] md:text-xs font-black text-slate-400 uppercase tracking-widest text-center">
                   <div className="flex flex-col items-center gap-1.5">
-                    <ShieldCheck size={18} className="text-blue-500" /> COMPRA 100% SEGURA
+                    <ShieldCheck size={18} className="text-brand-blue" /> COMPRA 100% SEGURA
                   </div>
                   <div className="flex flex-col items-center gap-1.5">
-                    <Zap size={18} className="text-yellow-500" /> ACESSO IMEDIATO
+                    <Zap size={18} className="text-brand-yellow" /> ACESSO IMEDIATO
                   </div>
                   <div className="flex flex-col items-center gap-1.5">
                     <PackageCheck size={18} className="text-green-500" /> VITALÍCIO
@@ -504,136 +534,71 @@ export default function App() {
         </div>
       </Section>
 
-      {/* Guarantee */}
+      {/* Guarantee Section */}
       <Section className="bg-white">
-        <div className="flex flex-col md:flex-row items-center gap-8 md:gap-16">
-          <div className="relative shrink-0">
-            <div className="relative w-40 h-40 md:w-64 md:h-64 flex items-center justify-center">
-              <img 
-                src="https://digitallfp.wordpress.com/wp-content/uploads/2025/09/selo-bloco-08.png" 
-                alt="Garantia de 7 Dias" 
-                className="w-full h-full object-contain"
-                referrerPolicy="no-referrer"
-              />
-            </div>
+        <div className="flex flex-col md:flex-row items-center gap-12 md:gap-20">
+          <div className="shrink-0">
+            <img 
+              src="https://digitallfp.wordpress.com/wp-content/uploads/2025/09/selo-bloco-08.png" 
+              alt="Garantia de 7 Dias" 
+              className="w-48 h-48 md:w-64 md:h-64 object-contain"
+              referrerPolicy="no-referrer"
+            />
           </div>
-          <div className="flex-1 space-y-6">
-            <h2 className="text-2xl md:text-5xl font-black text-[#1e293b] leading-[1.1] uppercase tracking-tighter">
-              SUA SATISFAÇÃO GARANTIDA OU SEU DINHEIRO DE VOLTA
-            </h2>
-            <p className="text-base md:xl font-medium text-slate-600 leading-relaxed">
-              Fique tranquilo! Você tem <strong>7 dias de garantia incondicional</strong>. Se por qualquer motivo você achar que o material não é para você, basta nos enviar um e-mail e devolvemos 100% do seu investimento. Sem perguntas e sem letras miúdas.
+          <div className="flex-1">
+            <h2 className="font-serif text-3xl md:text-5xl text-brand-blue mb-6">Sua satisfação garantida ou seu dinheiro de volta</h2>
+            <p className="text-slate-600 text-lg leading-relaxed mb-8">
+              Fique tranquilo! Você tem <strong>7 dias de garantia incondicional</strong>. Se por qualquer motivo você achar que o material não é para você, basta nos enviar um e-mail e devolvemos 100% do seu investimento.
             </p>
-            <div className="flex flex-wrap gap-3">
-              <div className="flex items-center gap-2 px-4 py-2 border-2 border-slate-100 rounded-full text-[10px] md:text-xs font-black text-slate-400 uppercase tracking-widest">
-                <Lock size={14} /> SSL CRYPTOGRAPHY
+            <div className="flex flex-wrap gap-4">
+              <div className="flex items-center gap-2 px-6 py-3 bg-brand-cream rounded-full text-xs font-bold text-brand-blue uppercase tracking-widest">
+                <Lock size={16} /> Compra 100% Segura
               </div>
-              <div className="flex items-center gap-2 px-4 py-2 border-2 border-slate-100 rounded-full text-[10px] md:text-xs font-black text-slate-400 uppercase tracking-widest">
-                <ShieldCheck size={14} /> SAFE ENVIRONMENT
+              <div className="flex items-center gap-2 px-6 py-3 bg-brand-cream rounded-full text-xs font-bold text-brand-blue uppercase tracking-widest">
+                <ShieldCheck size={16} /> Acesso Imediato
               </div>
             </div>
           </div>
         </div>
       </Section>
 
-      {/* FAQ */}
-      <Section className="bg-white border-t border-slate-100">
+      {/* FAQ Section */}
+      <Section className="bg-brand-cream">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-6xl font-black text-slate-800 uppercase tracking-tighter">
-            Dúvidas Frequentes (FAQ)
-          </h2>
+          <h2 className="font-serif text-3xl md:text-5xl text-brand-blue mb-4">Dúvidas Frequentes</h2>
+          <p className="text-slate-600 text-lg">Tudo o que você precisa saber sobre o material.</p>
         </div>
-        <div className="max-w-2xl mx-auto">
+        <div className="max-w-3xl mx-auto">
           <FAQItem 
-            question="Esse material é aceito pela coordenação e secretaria?" 
-            answer={
-              <>
-                <p><strong>Sim.</strong></p>
-                <p>Os PEIs foram elaborados com linguagem técnica pedagógica, seguindo práticas utilizadas em escolas públicas e privadas e alinhados à BNCC.</p>
-                <p>São modelos pensados justamente para evitar devoluções, correções e retrabalho.</p>
-              </>
-            } 
+            question="Os PEIs são realmente editáveis?" 
+            answer="Sim! Todos os 150 modelos são entregues em formato Word (.docx), permitindo que você altere qualquer informação e adapte para a sua realidade escolar." 
           />
           <FAQItem 
-            question="Serve para alunos com quais necessidades?" 
-            answer={
-              <>
-                <p>O material atende alunos com:</p>
-                <ul className="list-disc pl-5 mt-2 space-y-1">
-                  <li>TEA (Autismo)</li>
-                  <li>TDAH</li>
-                  <li>Deficiência Intelectual</li>
-                  <li>Dislexia</li>
-                  <li>Deficiência Física</li>
-                </ul>
-                <p className="mt-2">Além disso, os modelos são adaptáveis, permitindo personalização conforme cada aluno.</p>
-              </>
-            } 
+            question="O material está atualizado com o Decreto 12.773/2025?" 
+            answer="Sim, totalmente. Todo o conteúdo foi revisado e atualizado de acordo com as novas diretrizes do Decreto nº 12.773/2025." 
           />
           <FAQItem 
-            question="Sou iniciante no AEE. Vou conseguir usar?" 
-            answer={
-              <>
-                <p><strong>Sim, principalmente se você está começando.</strong></p>
-                <p>Os PEIs são guiados, organizados e editáveis, feitos para quem ainda se sente insegura na escrita, nos objetivos e nos relatórios.</p>
-                <p className="mt-2">Você não precisa “saber escrever bonito”. É só adaptar, ajustar e entregar com segurança.</p>
-              </>
-            } 
+            question="Posso usar esses PEIs para qualquer rede de ensino?" 
+            answer="Sim. Os modelos foram desenvolvidos para serem aceitos tanto na rede pública quanto na rede privada em todo o Brasil." 
           />
           <FAQItem 
-            question="Preciso saber mexer em computador?" 
-            answer="Não. Os arquivos são em Word e PDF, fáceis de editar, mesmo para quem tem pouca familiaridade com tecnologia." 
+            question="Como funciona o alinhamento à BNCC?" 
+            answer="Os PEIs já trazem os campos de objetivos e habilidades alinhados aos códigos e competências da BNCC (Base Nacional Comum Curricular)." 
           />
           <FAQItem 
-            question="Em quanto tempo consigo montar um PEI?" 
-            answer="Na maioria dos casos, entre 10 e 15 minutos. O que antes levava horas agora vira um processo rápido e sem estresse." 
+            question="Recebo o arquivo imediatamente após a compra?" 
+            answer="Sim! Assim que o seu pagamento for aprovado, você receberá o acesso imediato ao material no seu e-mail e também via WhatsApp." 
           />
-          <FAQItem 
-            question="Esse material substitui a avaliação do aluno?" 
-            answer={
-              <>
-                <p><strong>Não.</strong></p>
-                <p>Ele facilita a escrita e a organização, mas respeita a individualidade do aluno. Você continua sendo a profissional — o material apenas acelera e orienta.</p>
-              </>
-            } 
-          />
-          <FAQItem 
-            question="Vou receber tudo na hora?" 
-            answer="Sim. Acesso imediato. Após o pagamento, você recebe o link para baixar todo o material instantaneamente." 
-          />
-          <FAQItem 
-            question="E se eu não gostar?" 
-            answer="Você tem garantia. Se dentro do prazo você sentir que o material não é para você, basta solicitar o reembolso." 
-          />
-        </div>
-      </Section>
-
-      {/* Final CTA */}
-      <Section className="bg-slate-50 border-t border-slate-100" tight>
-        <div className="max-w-2xl mx-auto text-center">
-          <Badge className="bg-yellow-400 text-slate-900 mb-4">OFERTA DE LANÇAMENTO</Badge>
-          <h2 className="text-3xl md:text-5xl font-black text-slate-800 mb-2 uppercase tracking-tighter">
-            Oferta Especial
-          </h2>
-          <p className="text-lg md:text-xl font-bold text-slate-600 mb-8">
-            Garanta seu KIT DE PEIS PRONTOS agora mesmo.
-          </p>
-          <Button onClick={scrollToOffer} className="bg-green-500 text-white border-b-8 border-green-700 hover:bg-green-400">
-            QUERO MEU ACESSO AGORA <ArrowRight className="ml-2" />
-          </Button>
         </div>
       </Section>
 
       {/* Footer */}
-      <footer className="bg-slate-900 text-white py-20 px-6 text-center">
-        <div className="max-w-2xl mx-auto space-y-8">
-          <Pencil size={40} className="mx-auto text-blue-400" />
-          <p className="text-lg md:text-3xl font-medium text-slate-300 leading-relaxed italic px-4">
-            "Este material foi criado para <span className="text-white font-black">facilitar sua rotina</span>, te dar segurança técnica e <span className="text-white font-black">devolver o seu tempo livre</span>."
+      <footer className="bg-brand-blue text-white py-20 px-6">
+        <div className="max-w-6xl mx-auto text-center">
+          <div className="font-serif text-3xl text-brand-yellow mb-8 italic">Super Kit PEI Premium</div>
+          <p className="text-white/40 text-sm uppercase tracking-[0.3em] font-bold">
+            © 2026 • TODOS OS DIREITOS RESERVADOS
           </p>
-          <div className="pt-12 border-t border-white/10 text-[10px] md:text-xs uppercase tracking-[0.3em] font-black text-slate-500">
-            © 2026 SUPER KIT PEI PREMIUM • AEE E EDUCAÇÃO ESPECIAL
-          </div>
         </div>
       </footer>
     </div>
